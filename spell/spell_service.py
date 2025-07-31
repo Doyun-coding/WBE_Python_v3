@@ -4,11 +4,13 @@ from spell.spell_message_generator import generate_spell_cool_down_message
 
 # 스펠 쿨다운 정보를 Redis 저장하는 함수
 def save_spell_cool_down(
-        summoner_id: int, champion_name: str, spell_name: str, spell_cool_time: int, skill_ability_haste: int):
+        summoner_id: int, champion_name: str, spell_name: str,
+        spell_cool_time: int, skill_ability_haste: int, elapsed_time: int = 0):
     spell_cool_down_redis_key = f"spell:{summoner_id}:{champion_name}:{spell_name}"
     spell_cool_down_redis_value = generate_spell_cool_down_message(champion_name, spell_name)
 
     expire_cool_time = calculate_spell_cool_time(spell_cool_time, skill_ability_haste)
+    expire_cool_time -= elapsed_time    # 경과 시간 제외
 
     # Redis 스펠 쿨다운 정보 저장
     redis_client.set(spell_cool_down_redis_key, spell_cool_down_redis_value, ex=expire_cool_time)

@@ -3,6 +3,7 @@ import os
 import requests
 import tempfile
 import logging
+import time
 
 import numpy as np
 import whisper
@@ -33,6 +34,8 @@ def load_prompt_template(file_path: str) -> str:
 # 음성 -> 텍스트 -> GPT 분석 -> TTS 응답 -> WebSocket 전송까지 담당하는 파이프라인
 def whisper_pipeline(summoner_id, region, audio_data, audio_queue, loop):
     logging.info(f"[🔊 Whisper] {summoner_id} 음성 분석 시작")
+
+    start_time = time.time()  # 시작 시간 기록
 
     # 입력된 float32 PCM 오디오 데이터 임시 wav 파일로 저장
     with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmpfile:
@@ -69,12 +72,14 @@ def whisper_pipeline(summoner_id, region, audio_data, audio_queue, loop):
     logging.info(f"[🎯 결과] {summoner_id}: {final_text}")
 
     # Spring 서버로 결과 전송 ([챔피언 이름] [스펠 이름])
-    response = requests.post("http://localhost:8080/spell", json={
-    # response = requests.post("https://lolpago.com/api/spell", json={
+    # response = requests.post("http://localhost:8080/spell", json={
+    response = requests.post("https://lolpago.com/api/spell", json={
         "summonerId": summoner_id,
         "finalText": final_text,
         "region": region
     })
+
+    elapsed_time = time.time() - start_time  # 측정 종료
 
     # Spring 서버 응답 CREATED 아니면 에러 처리
     if response.status_code != 201:
@@ -92,7 +97,7 @@ def whisper_pipeline(summoner_id, region, audio_data, audio_queue, loop):
         # redis 스펠 쿨다운 정보 저장
         save_spell_cool_down(
             response_data["summonerId"], response_data["championName"], response_data["spellName"],
-            response_data["spellCoolTime"], response_data["skillAbilityHaste"]
+            response_data["spellCoolTime"], response_data["skillAbilityHaste"], int(elapsed_time)
         )
 
         # 🎧 TTS 생성 (mp3 binary 반환)
