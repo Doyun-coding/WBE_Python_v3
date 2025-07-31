@@ -1,3 +1,5 @@
+import logging
+import config.log_config
 import webrtcvad
 import collections
 import numpy as np
@@ -70,7 +72,7 @@ class VoiceActivityDetector:
                 # WebRTC VAD로 실제 음성 여부 판단
                 speech = self.is_speech(frame)
 
-            print(f"{'🎙️ 감지됨' if speech else '🔈 무음'} | volume={volume:.4f}")
+            logging.debug(f"{'🎙️ 감지됨' if speech else '🔈 무음'} | volume={volume:.4f}")
 
             # 음성이 감지되면 녹음 상태로 전환
             if self.triggered:
@@ -92,7 +94,7 @@ class VoiceActivityDetector:
                 # 최근 프레임을 링버퍼에 저장
                 self.ring_buffer.append(frame)
                 if speech and volume > self.volume_threshold:
-                    print("🎤 음성 시작 → 녹음 시작")
+                    logging.info("🎤 음성 시작 → 녹음 시작")
                     # 녹음 시작
                     self.triggered = True
                     # 시작 전 무음도 포함

@@ -1,4 +1,6 @@
 import os
+import logging
+import config.log_config
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -33,6 +35,6 @@ def generate_tts_mp3(spell_text: str) -> bytes:
         # 생성된 mp3 오디오 바이너리 데이터를 반환
         return tts.content
     except Exception as e:
-        print(f"[TTS 생성 오류] {e}")
+        logging.info(f"[TTS 생성 오류] {e}")
         # 에러 발생 시 None 반환
         return None
