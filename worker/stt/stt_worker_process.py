@@ -22,7 +22,8 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 # OpenAI 클라이언트 객체 생성
 client = OpenAI(api_key=openai_api_key)
 # Whisper 모델 로딩 (large 모델 사용)
-model = whisper.load_model("large")
+whisper_model_name = os.getenv("WHISPER_MODEL")
+model = whisper.load_model(whisper_model_name)
 
 
 # OpenAI 프롬프트 템플릿 파일 불러오는 메서드
