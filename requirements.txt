@@ -28,3 +28,4 @@ openai-whisper @ git+https://github.com/openai/whisper.git
 redis~=6.2.0
 dotenv~=0.9.9
 webrtcvad~=2.0.10
+bark~=0.1.5

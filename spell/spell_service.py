@@ -19,5 +19,6 @@ def save_spell_cool_down(
 # 스킬 가속을 통한 스펠 쿨타운 계산
 def calculate_spell_cool_time(spell_cool_time: int, skill_ability_haste: int) -> int:
     # 스킬 가속 적용
-    expire_cool_time = spell_cool_time * (1 - skill_ability_haste / 100)
+    expire_cool_time = spell_cool_time / (1 + (skill_ability_haste / 100))
+
     return int(expire_cool_time)
