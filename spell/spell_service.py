@@ -1,3 +1,5 @@
+import logging
+
 from config.redis_config import redis_client
 from spell.spell_message_generator import generate_spell_cool_down_message
 
@@ -13,6 +15,7 @@ def save_spell_cool_down(
     expire_cool_time -= elapsed_time    # 경과 시간 제외
 
     # Redis 스펠 쿨다운 정보 저장
+    logging.info(f"[Redis 저장] {spell_cool_down_redis_key} : {spell_cool_down_redis_value} (쿨타임: {expire_cool_time}s)")
     redis_client.set(spell_cool_down_redis_key, spell_cool_down_redis_value, ex=expire_cool_time)
 
 

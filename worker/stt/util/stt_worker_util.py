@@ -1,5 +1,4 @@
 import logging
-import config.log_config
 import webrtcvad
 import collections
 import numpy as np

@@ -1,6 +1,5 @@
 import os
 import logging
-import config.log_config
 from openai import OpenAI
 from dotenv import load_dotenv
 
