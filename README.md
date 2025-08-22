@@ -134,30 +134,6 @@ python main.py
 - **TTS 생성**: OpenAI TTS를 통한 자연스러운 음성 생성
 - **실시간 전송**: WebSocket을 통한 즉시 음성 피드백
 
-## 🎮 사용법
-
-### 클라이언트 연결
-```javascript
-const ws = new WebSocket('ws://localhost:8888');
-
-// 초기화 메시지 전송
-ws.send(JSON.stringify({
-    type: "init",
-    summonerId: "your_summoner_id",
-    region: "KR"
-}));
-
-// 음성 데이터 전송
-ws.send(audioData); // 바이너리 오디오 데이터
-
-// TTS 응답 수신
-ws.onmessage = function(event) {
-    if (event.data instanceof Blob) {
-        // MP3 음성 데이터 처리
-        playAudio(event.data);
-    }
-};
-```
 
 ### 지원하는 챔피언 및 스펠
 - **챔피언**: 150+ 챔피언 지원 (줄임말 포함)
@@ -199,23 +175,5 @@ Content-Type: application/json
 3. **오디오 처리 오류**
    - 오디오 포맷 확인 (16kHz, 16bit)
    - 마이크 권한 확인
-
-## 🤝 기여하기
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 라이선스
-
-이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 `LICENSE` 파일을 참조하세요.
-
-## 📞 연락처
-
-프로젝트 관련 문의사항이 있으시면 이슈를 생성해 주세요.
-
----
 
 **LOLPAGO** - 리그 오브 레전드 게임을 더욱 스마트하게! 🎮✨
